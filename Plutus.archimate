@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archimate:model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:archimate="http://www.archimatetool.com/archimate" name="Plutus" id="id-104ef6677b314ceeb33d39418722980c" version="4.9.0">
+  <folder name="Strategy" id="id-0f11746649894a60b649bec3d328808c" type="strategy"/>
+  <folder name="Business" id="id-cc2ea775601648e28b561b8bd64a2aef" type="business"/>
+  <folder name="Application" id="id-f4a12e4c58e646a3a7bdf0bcbab91e9c" type="application"/>
+  <folder name="Technology &amp; Physical" id="id-07d21a35ebf24a4f8873a65fb3539b59" type="technology"/>
+  <folder name="Motivation" id="id-54278433262442a2b2f333a3509eb1c2" type="motivation"/>
+  <folder name="Implementation &amp; Migration" id="id-ab176332935d4979923e36e4c2c54df4" type="implementation_migration"/>
+  <folder name="Other" id="id-bb0579b2c5a94d209510ddf8b50040a6" type="other"/>
+  <folder name="Relations" id="id-0220b96171d1413e8e787eee86727fe8" type="relations"/>
+  <folder name="Views" id="id-e05e6e8240e24c9088e717aa2b8cc92f" type="diagrams">
+    <element xsi:type="archimate:ArchimateDiagramModel" name="Default View" id="id-b815ba3a643d4a8e829b43163231bd08"/>
+  </folder>
+</archimate:model>
