@@ -1,8 +1,13 @@
 package com.plutus.transactions.dtos.responses;
 
 import com.plutus.transactions.entities.ExchangeTransaction;
-import com.plutus.transactions.entities.Transaction;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ExchangeTransactionResponse extends TransactionResponse {
 
     private long senderId;

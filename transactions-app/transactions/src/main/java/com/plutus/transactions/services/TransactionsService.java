@@ -1,14 +1,13 @@
 package com.plutus.transactions.services;
 
 import com.plutus.transactions.dtos.responses.AccountTransactionResponse;
-import com.plutus.transactions.dtos.responses.AppResponse;
-import com.plutus.transactions.dtos.responses.ErrorResponse;
 import com.plutus.transactions.dtos.responses.GenericResponse;
+import com.plutus.transactions.dtos.responses.SuccessResponse;
 import com.plutus.transactions.entities.Account;
 import com.plutus.transactions.entities.AccountTransaction;
 import com.plutus.transactions.entities.ExchangeTransaction;
-import com.plutus.transactions.entities.Transaction;
 import com.plutus.transactions.entities.enumerations.AccountTransactionType;
+import com.plutus.transactions.exceptions.BadRequestException;
 import com.plutus.transactions.repositories.AccountRepository;
 import com.plutus.transactions.repositories.AccountTransactionRepository;
 import com.plutus.transactions.repositories.ClientRepository;
@@ -55,74 +54,67 @@ public class TransactionsService {
         return this.accountTransactionRepository.save(transaction);
     }
 
-    private ErrorResponse verifyAmount(double amount) {
+    private void verifyAmount(double amount) {
         if (amount <= 0) {
-            return new ErrorResponse(HttpStatus.BAD_REQUEST, "Invalid amount passed");
+            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(), "Invalid amount passed");
         }
-        return null;
     }
 
-    public AppResponse withdraw(long accountId, double balance ) {
+    public AccountTransactionResponse withdraw(long accountId, double amount ) {
 
-        ErrorResponse error = verifyAmount(balance);
-        if (error != null) {
-            return error;
-        }
+        verifyAmount(amount);
 
         Optional<Account> account = this.accountRepository.findById(accountId);
 
         if (account.isEmpty()) {
-            return new ErrorResponse(HttpStatus.BAD_REQUEST, "Account does not exist");
+            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(), "Account does not exist");
         }
 
         Account existingAccount = account.get();
-        double newBalance = existingAccount.getBalance() - balance;
+        double newBalance = existingAccount.getBalance() - amount;
 
         if (newBalance < 0) {
-            return new ErrorResponse(HttpStatus.BAD_REQUEST, "Insufficient account balance");
+            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(), "Insufficient Funds");
         }
         existingAccount.setBalance(newBalance);
 
         existingAccount = this.accountRepository.save(existingAccount);
 
-        AccountTransaction transaction = generateAccountTransaction(existingAccount, balance, AccountTransactionType.WITHDRAW);
+        AccountTransaction transaction = generateAccountTransaction(existingAccount, amount, AccountTransactionType.WITHDRAW);
         return new AccountTransactionResponse(transaction);
     }
 
-    public AppResponse deposit(long accountId, double balance) {
+    public AccountTransactionResponse deposit(long accountId, double amount) {
 
-        ErrorResponse error = verifyAmount(balance);
-        if (error != null) {
-            return error;
-        }
+        verifyAmount(amount);
 
         Optional<Account> account = this.accountRepository.findById(accountId);
 
         if (account.isEmpty()) {
-            return new ErrorResponse(HttpStatus.BAD_REQUEST, "Account does not exist");
+            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(), "Account does not exist");
         }
 
         Account existingAccount = account.get();
-        double newBalance = existingAccount.getBalance() + balance;
+        double newBalance = existingAccount.getBalance() + amount;
 
         existingAccount.setBalance(newBalance);
 
         existingAccount = this.accountRepository.save(existingAccount);
 
-        AccountTransaction transaction = generateAccountTransaction(existingAccount, balance, AccountTransactionType.DEPOSIT);
+        AccountTransaction transaction = generateAccountTransaction(existingAccount, amount, AccountTransactionType.DEPOSIT);
         return new AccountTransactionResponse(transaction);
     }
 
-    public AppResponse send(long senderId, long receiverId, double amount) {
-        return new AppResponse("Send successful");
+    public SuccessResponse send(long senderId, long receiverId, double amount) {
+        return new SuccessResponse("Send successful");
     }
 
     public GenericResponse listAccountTransactions(long accountId) {
-        return new AppResponse("Success");
+        return new SuccessResponse("Success");
     }
 
     public GenericResponse listClientTransactions(long clientId) {
-        return new AppResponse("Success");
+        return new SuccessResponse("Success");
     }
 
 }
