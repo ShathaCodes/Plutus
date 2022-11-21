@@ -7,7 +7,7 @@ import com.plutus.transactions.entities.Account;
 import com.plutus.transactions.entities.AccountTransaction;
 import com.plutus.transactions.entities.ExchangeTransaction;
 import com.plutus.transactions.entities.enumerations.AccountTransactionType;
-import com.plutus.transactions.exceptions.BadRequestException;
+import com.plutus.transactions.exceptions.RequestException;
 import com.plutus.transactions.repositories.AccountRepository;
 import com.plutus.transactions.repositories.AccountTransactionRepository;
 import com.plutus.transactions.repositories.ClientRepository;
@@ -56,7 +56,7 @@ public class TransactionsService {
 
     private void verifyAmount(double amount) {
         if (amount <= 0) {
-            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(), "Invalid amount passed");
+            throw new RequestException(HttpStatus.BAD_REQUEST.value(), "Invalid amount passed");
         }
     }
 
@@ -67,14 +67,14 @@ public class TransactionsService {
         Optional<Account> account = this.accountRepository.findById(accountId);
 
         if (account.isEmpty()) {
-            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(), "Account does not exist");
+            throw new RequestException(HttpStatus.NOT_FOUND.value(), "Account does not exist");
         }
 
         Account existingAccount = account.get();
         double newBalance = existingAccount.getBalance() - amount;
 
         if (newBalance < 0) {
-            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(), "Insufficient Funds");
+            throw new RequestException(HttpStatus.BAD_REQUEST.value(), "Insufficient Funds");
         }
         existingAccount.setBalance(newBalance);
 
@@ -91,7 +91,7 @@ public class TransactionsService {
         Optional<Account> account = this.accountRepository.findById(accountId);
 
         if (account.isEmpty()) {
-            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(), "Account does not exist");
+            throw new RequestException(HttpStatus.NOT_FOUND.value(), "Account does not exist");
         }
 
         Account existingAccount = account.get();
