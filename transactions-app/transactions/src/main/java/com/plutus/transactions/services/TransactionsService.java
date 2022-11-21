@@ -109,7 +109,7 @@ public class TransactionsService {
 
         existingAccount = this.accountRepository.save(existingAccount);
 
-        AccountTransaction transaction = generateAccountTransaction(existingAccount, balance, AccountTransactionType.WITHDRAW);
+        AccountTransaction transaction = generateAccountTransaction(existingAccount, balance, AccountTransactionType.DEPOSIT);
         return new AccountTransactionResponse(transaction);
     }
 
