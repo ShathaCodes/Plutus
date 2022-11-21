@@ -1,7 +1,7 @@
 package com.plutus.transactions.services;
 
-import com.plutus.transactions.dtos.responses.AppResponse;
 import com.plutus.transactions.dtos.responses.GenericResponse;
+import com.plutus.transactions.dtos.responses.SuccessResponse;
 import com.plutus.transactions.repositories.ClientRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ public class AccountService {
     }
 
     public GenericResponse listClientAccounts(long clientId) {
-        return new AppResponse("Success");
+        return new SuccessResponse("Success");
     }
 
 }

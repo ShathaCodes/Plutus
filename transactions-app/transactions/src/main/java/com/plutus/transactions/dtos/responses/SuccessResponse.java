@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class AppResponse implements GenericResponse{
+public class SuccessResponse implements GenericResponse{
     private String message;
 
-    public AppResponse(String message) {
+    public SuccessResponse(String message) {
         this.message = message;
     }
 }

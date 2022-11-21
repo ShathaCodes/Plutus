@@ -1,6 +1,13 @@
 package com.plutus.transactions.dtos.responses;
 
-public class TransactionResponse extends AppResponse {
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class TransactionResponse extends SuccessResponse {
 
     private long transactionId;
     private String timestamp ;

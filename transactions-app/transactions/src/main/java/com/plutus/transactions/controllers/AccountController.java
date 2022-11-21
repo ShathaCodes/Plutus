@@ -1,11 +1,13 @@
 package com.plutus.transactions.controllers;
 
 import com.plutus.transactions.dtos.responses.GenericResponse;
+import com.plutus.transactions.exceptions.BadRequestException;
 import com.plutus.transactions.services.AccountService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController()
 @RequestMapping(path = "/accounts")
