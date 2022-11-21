@@ -1,5 +1,6 @@
 package com.plutus.transactions.services;
 
+import com.plutus.transactions.dtos.responses.AccountTransactionResponse;
 import com.plutus.transactions.dtos.responses.AppResponse;
 import com.plutus.transactions.dtos.responses.ErrorResponse;
 import com.plutus.transactions.dtos.responses.GenericResponse;
@@ -85,7 +86,7 @@ public class TransactionsService {
         existingAccount = this.accountRepository.save(existingAccount);
 
         AccountTransaction transaction = generateAccountTransaction(existingAccount, balance, AccountTransactionType.WITHDRAW);
-        return new AppResponse("Withdraw successful");
+        return new AccountTransactionResponse(transaction);
     }
 
     public AppResponse deposit(long accountId, double balance) {
@@ -109,7 +110,7 @@ public class TransactionsService {
         existingAccount = this.accountRepository.save(existingAccount);
 
         AccountTransaction transaction = generateAccountTransaction(existingAccount, balance, AccountTransactionType.WITHDRAW);
-        return new AppResponse("deposit successful");
+        return new AccountTransactionResponse(transaction);
     }
 
     public AppResponse send(long senderId, long receiverId, double amount) {
