@@ -14,8 +14,6 @@ docker compose up -d
 
 You can then run the application as you would run any other spring boot application.
 
-Documentation about the endpoints is available under `transactions` folder
-
 ## Backend Overview
 
 Below we will describe the database schema we used and the endpoints implemented in the transactions app.
