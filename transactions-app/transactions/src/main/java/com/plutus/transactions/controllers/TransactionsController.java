@@ -5,7 +5,7 @@ import com.plutus.transactions.dtos.requests.ExchangeRequest;
 import com.plutus.transactions.dtos.responses.AccountTransactionResponse;
 import com.plutus.transactions.dtos.responses.GenericResponse;
 import com.plutus.transactions.dtos.responses.SuccessResponse;
-import com.plutus.transactions.exceptions.BadRequestException;
+import com.plutus.transactions.exceptions.RequestException;
 import com.plutus.transactions.services.TransactionsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,9 +48,9 @@ public class TransactionsController {
         return  this.transactionsService.listAccountTransactions(clientId);
     }
 
-    @ExceptionHandler(BadRequestException.class)
-    void handleBadRequests(BadRequestException bre, HttpServletResponse response) throws IOException {
-        response.sendError(bre.errCode, bre.errCode + ":" + bre.getMessage());
+    @ExceptionHandler(RequestException.class)
+    void handleBadRequests(RequestException exception, HttpServletResponse response) throws IOException {
+        response.sendError(exception.errCode, exception.errCode + ":" + exception.getMessage());
     }
 
 }
