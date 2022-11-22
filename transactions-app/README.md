@@ -110,6 +110,14 @@ Resp ( Success ):
 
 ```json
 {
+  "senderId": 1,
+  "receiverId": 2,
+  "amount": 500
+}
+```
+
+```json
+{
   "message" : "transaction successful",
   "transactionId": 1,
   "amount": 100,
