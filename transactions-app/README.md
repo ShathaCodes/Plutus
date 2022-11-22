@@ -123,6 +123,8 @@ Resp ( Success ):
 ---
 
 
+**Description** : This will return all transactions for an account. Whether the user is the `sender` or a `receiver` of an `Exchange transaction`. Or whether he did a `withdraw` or a `deposit` via an `Account transaction`
+
 **URI** : /transactions/accounts/:accountId
 
 **HTTP Method** : GET
@@ -130,11 +132,23 @@ Resp ( Success ):
 ```json
 {
   "accountTransactions": [
-    {},
+    {
+      "id": 1,
+      "amount": 500.0,
+      "timestamp": "date+hms",
+      "accountId": 1,
+      "type": "DEPOSIT"
+    },
     {}
   ],
   "exchangeTransactions": [
-    {},
+    {
+      "id": 3,
+      "amount": 500.0,
+      "timestamp": "date+hms",
+      "senderId": 1,
+      "receiverId": 2
+    },
     {}
   ]
 }
@@ -154,7 +168,7 @@ Resp ( Success ):
       "balance": 1000.0
       },
     {
-      
+
     }
   ]
 }
