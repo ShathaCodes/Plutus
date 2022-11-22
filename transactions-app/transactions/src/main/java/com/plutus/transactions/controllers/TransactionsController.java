@@ -50,7 +50,7 @@ public class TransactionsController {
 
     @ExceptionHandler(RequestException.class)
     void handleBadRequests(RequestException exception, HttpServletResponse response) throws IOException {
-        response.sendError(exception.errCode, exception.errCode + ":" + exception.getMessage());
+        response.sendError(exception.errCode, String.format("[Transactions] : %s", exception.getMessage()));
     }
 
 }
