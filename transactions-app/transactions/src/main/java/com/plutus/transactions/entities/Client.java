@@ -23,8 +23,6 @@ public class Client {
     @Column(name = "last_name")
     private String lastName;
 
-    @OneToMany(mappedBy = "client")
-    private List<Account> accounts = new ArrayList<>();;
     public Client(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;

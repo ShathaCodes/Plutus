@@ -96,10 +96,11 @@ Resp ( Success ):
 
 ```json
 {
+  "message" : "transaction successful",
   "transactionId": 1,
-  "accountId": 1,
   "timestamp": "date+hms",
-  "amount": 100
+  "amount": 100,
+  "type": "DEPOSIT"
 }
 ```
 
@@ -111,8 +112,10 @@ Resp ( Success ):
 
 ```json
 {
-  "senderId": 1,
+  "message" : "transaction successful",
+  "transactionId": 1,
   "amount": 100,
+  "senderId": 1,
   "receiverId": 2
 }
 ```
@@ -126,24 +129,11 @@ Resp ( Success ):
 
 ```json
 {
-  "transactions": [
+  "accountTransactions": [
     {},
     {}
-  ]
-}
-```
-
-
----
-
-**URI** : /transactions/clients/:clientId
-
-**HTTP Method** : GET
-
-
-```json
-{
-  "transactions": [
+  ],
+  "exchangeTransactions": [
     {},
     {}
   ]
@@ -159,8 +149,13 @@ Resp ( Success ):
 ```json
 {
   "accounts": [
-    {},
-    {}
+    {
+      "id": 148,
+      "balance": 1000.0
+      },
+    {
+      
+    }
   ]
 }
 ```

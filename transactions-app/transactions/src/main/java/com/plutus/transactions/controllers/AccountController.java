@@ -1,5 +1,6 @@
 package com.plutus.transactions.controllers;
 
+import com.plutus.transactions.dtos.responses.ClientAccountsResponse;
 import com.plutus.transactions.dtos.responses.GenericResponse;
 import com.plutus.transactions.exceptions.RequestException;
 import com.plutus.transactions.services.AccountService;
@@ -18,8 +19,8 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/clients/{clientId}")
-    public GenericResponse listClientAccount(@PathVariable long clientId) {
+    @GetMapping("/{clientId}")
+    public ClientAccountsResponse listClientAccount(@PathVariable long clientId) {
         return this.accountService.listClientAccounts(clientId);
     }
 
