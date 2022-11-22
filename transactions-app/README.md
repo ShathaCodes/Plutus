@@ -96,10 +96,11 @@ Resp ( Success ):
 
 ```json
 {
+  "message" : "transaction successful",
   "transactionId": 1,
-  "accountId": 1,
   "timestamp": "date+hms",
-  "amount": 100
+  "amount": 100,
+  "type": "DEPOSIT"
 }
 ```
 
@@ -111,8 +112,10 @@ Resp ( Success ):
 
 ```json
 {
-  "senderId": 1,
+  "message" : "transaction successful",
+  "transactionId": 1,
   "amount": 100,
+  "senderId": 1,
   "receiverId": 2
 }
 ```
@@ -120,31 +123,32 @@ Resp ( Success ):
 ---
 
 
+**Description** : This will return all transactions for an account. Whether the user is the `sender` or a `receiver` of an `Exchange transaction`. Or whether he did a `withdraw` or a `deposit` via an `Account transaction`
+
 **URI** : /transactions/accounts/:accountId
 
 **HTTP Method** : GET
 
 ```json
 {
-  "transactions": [
-    {},
+  "accountTransactions": [
+    {
+      "id": 1,
+      "amount": 500.0,
+      "timestamp": "date+hms",
+      "accountId": 1,
+      "type": "DEPOSIT"
+    },
     {}
-  ]
-}
-```
-
-
----
-
-**URI** : /transactions/clients/:clientId
-
-**HTTP Method** : GET
-
-
-```json
-{
-  "transactions": [
-    {},
+  ],
+  "exchangeTransactions": [
+    {
+      "id": 3,
+      "amount": 500.0,
+      "timestamp": "date+hms",
+      "senderId": 1,
+      "receiverId": 2
+    },
     {}
   ]
 }
@@ -159,8 +163,13 @@ Resp ( Success ):
 ```json
 {
   "accounts": [
-    {},
-    {}
+    {
+      "id": 148,
+      "balance": 1000.0
+      },
+    {
+
+    }
   ]
 }
 ```

@@ -14,7 +14,7 @@ public class ExchangeTransactionResponse extends TransactionResponse {
     private long receiverId;
 
     public ExchangeTransactionResponse(ExchangeTransaction transaction) {
-        super(transaction.getId(), transaction.getTimestamp().toString(), transaction.getAmount());
+        super(transaction.getId(), transaction.getTimestamp(), transaction.getAmount());
         this.senderId = transaction.getSender().getId();
         this.receiverId = transaction.getReceiver().getId();
     }

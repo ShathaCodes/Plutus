@@ -1,12 +1,10 @@
 package com.plutus.transactions.services;
 
-import com.plutus.transactions.dtos.responses.AccountTransactionResponse;
-import com.plutus.transactions.dtos.responses.ExchangeTransactionResponse;
-import com.plutus.transactions.dtos.responses.GenericResponse;
-import com.plutus.transactions.dtos.responses.SuccessResponse;
+import com.plutus.transactions.dtos.responses.*;
 import com.plutus.transactions.entities.Account;
 import com.plutus.transactions.entities.AccountTransaction;
 import com.plutus.transactions.entities.ExchangeTransaction;
+import com.plutus.transactions.entities.Transaction;
 import com.plutus.transactions.entities.enumerations.AccountTransactionType;
 import com.plutus.transactions.exceptions.RequestException;
 import com.plutus.transactions.repositories.AccountRepository;
@@ -176,12 +174,12 @@ public class TransactionsService {
         return new ExchangeTransactionResponse(transaction);
     }
 
-    public GenericResponse listAccountTransactions(long accountId) {
-        return new SuccessResponse("Success");
-    }
+    public AccountTransactionsResponse listAccountTransactions(long accountId) {
+        findAccount(accountId); // We verify that the account exists first
+        List<AccountTransaction> accountTransactions =  this.accountTransactionRepository.findByAccountId(accountId);
+        List<ExchangeTransaction> exchangeTransactions = this.exchangeTransactionRepository.findBySenderIdOrReceiverId(accountId, accountId);
 
-    public GenericResponse listClientTransactions(long clientId) {
-        return new SuccessResponse("Success");
+        return new AccountTransactionsResponse(accountTransactions, exchangeTransactions);
     }
 
 }

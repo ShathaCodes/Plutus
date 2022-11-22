@@ -3,6 +3,7 @@ package com.plutus.transactions.controllers;
 import com.plutus.transactions.dtos.requests.AccountActionRequest;
 import com.plutus.transactions.dtos.requests.ExchangeRequest;
 import com.plutus.transactions.dtos.responses.AccountTransactionResponse;
+import com.plutus.transactions.dtos.responses.AccountTransactionsResponse;
 import com.plutus.transactions.dtos.responses.GenericResponse;
 import com.plutus.transactions.dtos.responses.SuccessResponse;
 import com.plutus.transactions.exceptions.RequestException;
@@ -39,13 +40,8 @@ public class TransactionsController {
     }
 
     @GetMapping("/accounts/{accountId}")
-    public GenericResponse listAccountTransactions(@PathVariable long accountId) {
+    public AccountTransactionsResponse listAccountTransactions(@PathVariable long accountId) {
         return  this.transactionsService.listAccountTransactions(accountId);
-    }
-
-    @GetMapping("/clients/{clientId}")
-    public GenericResponse listClientTransactions(@PathVariable long clientId) {
-        return  this.transactionsService.listAccountTransactions(clientId);
     }
 
     @ExceptionHandler(RequestException.class)

@@ -1,5 +1,6 @@
 package com.plutus.transactions.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,8 +21,9 @@ public class Account {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="client_id")
+    @JsonIgnore
     private Client client;
 
     @Column(name = "balance")
@@ -36,7 +38,6 @@ public class Account {
     public String toString() {
         return "Account{" +
                 "id=" + id +
-                ", client=" + client +
                 ", balance=" + balance +
                 '}';
     }
