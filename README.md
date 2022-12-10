@@ -4,6 +4,15 @@
 
 This repository will contain the different TOGAF models and applications used for our project.
 
+## Execute
+
+```
+docker-compose build
+docker-compose run
+```
+
+Then you just need to run the **Mule ESB** and you can test the endpoints via the **Postman collection**.
+
 ## Relevant documents
 
 Project Description : [project description](https://insatunisia.github.io/TP-Urbanisation/projet/)
