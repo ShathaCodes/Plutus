@@ -1,0 +1,25 @@
+bot : Hi There! I am a Plutus. You can begin conversation by typing in a message and pressing enter.
+user : my name is Shatha
+bot : - Hello! your name has been saved. What is your age?
+user : my age is 20,21,22
+bot : - okay. your age has been stored. Which city do you live in?
+user : chennai, mumbai, kolkata, delhi
+bot : - okay location stored. Welcome to banking portal. 
+user : Is the bank working today? Does the bank work today ? Are you open today ?
+bot : -The bank is open all days from Monday to Saturday from 9am to 3pm ,with exceptions of 2nd Saturdays.
+user : Give me a list of all Branches, Show me your branches
+bot : - Tunis, Paris, London, Sfax, Kairouan, Berlin, Nice, Luxembourg, Sousse
+user : Which branches have a storage locker ? Do you have storage lockers
+bot : - Tunis, Paris, London, Sfax these branches have a locker storage facility .
+user : Do you have a cash deposit machine ?
+bot : - Please visit the brach to deposit cash using our e-facility
+user : Are your Servers Running?
+bot : - The banks servers are up and running
+user : Tell me more about your bank
+bot : - Plutus is an international bank based in Tunisia. Our network comprises around 7,500 offices in over 80 countries and territories in Europe, the Asia-Pacific region, the Americas, the Middle East and Africa.
+user : Do you have the currency conversio facility ? Do you guys convert currency ?
+bot : - All our bank Branches have the forex Exchange facility
+user : thanks
+bot : - happy to help!
+user : Bye
+bot : - Bye. Nice talking to you
