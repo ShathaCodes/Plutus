@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  transactions-app:
+    build: ./transactions-app/.
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://transactions-db:5432/transactions-db
+      - SPRING_DATASOURCE_PASSWORD=plutuspass
+      - SPRING_DATASOURCE_USERNAME=plutus
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+    depends_on:
+      - transactions-db
+
+  fraud-app:
+    build: ./fraud-app/.
+    ports:
+      - 5000:5000
+    networks:
+      - app-network
+
+  transactions-db:
+    image: 'postgres:12.10'
+    restart: always
+    container_name: transactions-db
+    environment:
+      - POSTGRES_USER=plutus
+      - POSTGRES_PASSWORD=plutuspass
+      - POSTGRES_DB=transactions-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres:/var/lib/postgres
+    networks:
+      - app-network
+      
+networks:
+  app-network:

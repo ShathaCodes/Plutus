@@ -1,0 +1,130 @@
+#%RAML 1.0
+title: plutus
+resourceTypes:
+  Collection:
+    put:
+      body:
+        application/json:
+          type: <<item>>
+      responses:
+        200:
+          body:
+            application/json:
+              type: <<itemSuccess>>
+        400:
+          body:
+            application/json:
+              type: <<itemError>>
+
+version: v1
+baseUri: /transactions
+types:
+  Transaction:
+    properties:
+      accountId: number
+      Amount: number
+    example:
+      accountId: 1
+      Amount: 100
+  TransactionSuccess:
+    properties:
+      message: string
+      Amount: number
+      transactionId: number
+      timestamp: datetime
+      type: string
+    example:
+      message: transaction successful
+      Amount: 100
+      transactionId: 1
+      timestamp: 2018-11-13T20:20:39+00:00
+      type: DEPOSIT
+  TransactionError:
+    properties:
+      message: string
+      error: string
+      status: number
+      timestamp: datetime
+      path: string
+    example:
+      message: Insufficient Funds
+      error: Bad Request
+      status: 400
+      timestamp: 2018-11-13T20:20:39+00:00
+      path: /transactions/withdraw
+     
+  TransactionSend:
+    properties:
+      senderId: number
+      receiverId: number
+      amount: number
+    example:
+      senderId: 1
+      receiverId: 2
+      amount: 100
+  TransactionSendSuccess:
+    properties:
+      message: string
+      amount: number
+      transactionId: number
+      senderId: number
+      receiverId: number
+    example:
+      message: transaction successful
+      transactionId: 1
+      senderId: 1
+      receiverId: 2
+      amount: 100
+  AccountTransactions:
+    properties:
+      accountTransactions: Transaction[]
+      exchangeTransactions: TransactionSend[]
+  Account:
+    properties:
+      id : number
+      balance: number
+
+    
+
+
+/transactions:
+  /withdraw:
+    type: { Collection: {item : Transaction, itemSuccess: TransactionSuccess, itemError: TransactionError } }
+  /deposit:
+    type: { Collection: {item : Transaction, itemSuccess: TransactionSuccess, itemError: TransactionError } }
+  /send:
+    type: { Collection: {item : TransactionSend, itemSuccess: TransactionSendSuccess, itemError: TransactionError } }
+
+  /accounts:
+    /{accountId}:
+      get:
+       responses:
+          200:
+            body:
+              application/json:
+                type: AccountTransactions  
+       
+  /verify:
+    get:
+      body:
+        application/json:
+          type: TransactionSend
+      responses:
+          200:
+            body:
+              application/json:
+                properties:
+                  is_fraud: number
+
+
+/account:
+  /{clientId}:
+    get:
+     responses:
+        200:
+          body:
+            application/json:
+              properties:
+                accounts: Account[]  
+       
+  

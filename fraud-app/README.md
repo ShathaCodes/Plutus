@@ -23,7 +23,7 @@ pipenv shell
 To run the project in development mode :
 
 ```bash
-flask --app main.py run
+flask --app app.py run
 ```
 
 ## API
