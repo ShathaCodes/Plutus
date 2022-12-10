@@ -9,7 +9,7 @@ app = Flask(__name__)
 fraud_service = FraudService()
 
 
-@app.get("/transactions/verify")
+@app.post("/transactions/verify")
 @validate_json(transaction_schema)
 def verify_transaction():
     transaction = request.get_json(force=True)

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <http:listener-config name="plutus-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="plutus-config" api="plutus.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <http:request-config name="HTTP_Request_configuration_tx" doc:name="HTTP Request configuration" doc:id="4887f751-fe99-45f2-ae9e-610b3257c797" >
+		<http:request-connection host="localhost" port="8080" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_configuration_fraud" doc:name="HTTP Request configuration" doc:id="0a7747eb-fcce-449c-ab97-3b381ca9c2de" >
+		<http:request-connection host="localhost" port="5000" />
+	</http:request-config>
+	<flow name="plutus-main">
+        <http:listener config-ref="plutus-httpListenerConfig" path="/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="plutus-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad request"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Method not allowed"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not acceptable"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Unsupported media type"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not Implemented"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="plutus-console">
+        <http:listener config-ref="plutus-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="plutus-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="put:\transactions\deposit:application\json:plutus-config">
+		<http:request method="PUT" doc:name="Request" doc:id="dd1b2c4e-5fe4-49d5-bf3a-1d585b6b29a1" config-ref="HTTP_Request_configuration_tx" path="/transactions/deposit"/>
+    </flow>
+    <flow name="put:\transactions\send:application\json:plutus-config">
+		<http:request method="PUT" doc:name="Request" doc:id="b721943e-9c44-4ae2-926b-7c21e0355bfd" config-ref="HTTP_Request_configuration_tx" path="/transactions/send"/>
+    </flow>
+    <flow name="put:\transactions\withdraw:application\json:plutus-config">
+		<http:request method="PUT" doc:name="Request" doc:id="647b6602-6cae-4c05-843e-2b579c640ca1" config-ref="HTTP_Request_configuration_tx" path="/transactions/withdraw">
+			<http:body ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+    "accountId": payload.accountId,
+    "amount": payload.amount
+}]]]></http:body>
+		</http:request>
+    </flow>
+    <flow name="post:\transactions\verify:application\json:plutus-config">
+        <logger level="INFO" message="post:\transactions\verify:application\json:plutus-config" />
+		<http:request method="POST" doc:name="Request" doc:id="06d55ed5-2b09-48ec-9da6-4e555f39a11f" path="/transactions/verify" config-ref="HTTP_Request_configuration_fraud">
+		</http:request>
+    </flow>
+    <flow name="get:\transactions\accounts\(accountId):plutus-config">
+        <logger level="INFO" message="get:\transactions\accounts\(accountId):plutus-config" />
+		<http:request method="GET" doc:name="Request" doc:id="ff81d440-9dbd-412b-8b74-3d3f34fcad10" config-ref="HTTP_Request_configuration_tx" path="/transactions/accounts/{accountId}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	accountId : attributes.uriParams.'accountId'
+}]]]></http:uri-params>
+		</http:request>
+    </flow>
+    <flow name="get:\account\(clientId):plutus-config">
+        <logger level="INFO" message="get:\account\(clientId):plutus-config" />
+		<http:request method="GET" doc:name="Request" doc:id="c8b38c6c-1e76-4402-8097-b93561afee5c" config-ref="HTTP_Request_configuration_tx" path="/accounts/{clientId}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"clientId" : attributes.uriParams.'clientId'
+}]]]></http:uri-params>
+		</http:request>
+    </flow>
+</mule>

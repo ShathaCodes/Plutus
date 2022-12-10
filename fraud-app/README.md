@@ -30,7 +30,7 @@ flask --app app.py run
 
 **URI** : `/transactions/verify`
 
-**HTTP Method**: GET
+**HTTP Method**: POST
 
 ```json
 {

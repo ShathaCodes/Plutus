@@ -1,6 +1,7 @@
 version: '3.4'
 
 services:
+
   transactions-app:
     build: ./transactions-app/.
     environment:
@@ -31,8 +32,6 @@ services:
       - POSTGRES_DB=transactions-db
     ports:
       - "5432:5432"
-    volumes:
-      - ./postgres:/var/lib/postgres
     networks:
       - app-network
       
