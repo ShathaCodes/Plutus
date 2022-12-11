@@ -4,7 +4,7 @@ body {
 }
 
 h1 {
-    color: black;
+    color: rgb(124, 118, 118);
     margin-bottom: 0;
     margin-top: 0;
     text-align: center;
@@ -60,7 +60,7 @@ h3 {
 }
 
 .userText span {
-    background-color:  #003399;
+    background-color:  #8196c0;
     padding: 10px;
     border-radius: 2px;
 }
@@ -74,15 +74,22 @@ h3 {
 }
 
 .botText span {
-    background-color:  #0066ff;
+    background-color:  #8196c0;
     padding: 10px;
     border-radius: 2px;
 }
-
+.botText1 {
+    color: rgb(74, 72, 72);
+    background-color:  #8196c0;
+    padding: 10px;
+    font-size: 10px;
+    border-radius: 2px;
+}
 #tidbit {
     position:absolute;
     bottom:0;
     right:0;
     width: 300px;
 }
+
 
